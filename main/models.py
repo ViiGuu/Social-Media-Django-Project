@@ -21,6 +21,6 @@ class UserInfo(models.Model):
  
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    author = models.OneToOneField(UserInfo, on_delete=models.CASCADE) # would deleting user mean to deleting comment or other way around?
+    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE) # would deleting user mean to deleting comment or other way around?
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
