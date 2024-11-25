@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+import datetime
+from profile_app.models import Profile
 
 # Create your models here.
 
@@ -12,14 +14,9 @@ class Post(models.Model):
     image = models.ImageField(blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
-class UserInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField( upload_to='photos/',blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
