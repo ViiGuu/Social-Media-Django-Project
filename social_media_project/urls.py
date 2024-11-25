@@ -20,5 +20,6 @@ from users_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users_app.urls'))
+    path('users/', include('users_app.urls')),
+    path('posts/', include('main.urls')),
 ]
