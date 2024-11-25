@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from users_app.forms import UserRegistrationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
@@ -27,7 +27,7 @@ def user_register(request):
     else:
         user_reg_form = UserRegistrationForm()
 
-    return render(request, 'test_registration_form.html', { #placeholder html for testing
+    return render(request, 'registration_form.html', { #placeholder html for testing
         'user_reg_form' : user_reg_form, 
         'registered' : registered})
 
@@ -40,7 +40,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return render(request, 'test_login_success.html') #placeholder html for testing, remove later and return HttpResponseRedirect below instead
+                return redirect('posts_app:all_posts')
+                # return render(request, 'all_posts.html') #placeholder html for testing, remove later and return HttpResponseRedirect below instead
                 # return HttpResponseRedirect(reverse('')) #redirect to home/index page once it's implemented
             else:
                 return HttpResponse('User not active')
@@ -49,4 +50,4 @@ def user_login(request):
             print(f"Login failed for user: {username}")
             return HttpResponse("Invalid login details")
     else:
-        return render(request, 'test_login.html') #placeholder html for testing
+        return render(request, 'login.html') #placeholder html for testing
