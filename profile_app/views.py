@@ -8,6 +8,6 @@ def index(request):
 @login_required
 def profile_view(request):
     profile = request.user.profile
-    return render(request, 'profile.html', {'profile': profile})
+    return render(request, 'profile_app/profile.html', {'profile': profile})
 
 #update profile

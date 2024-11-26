@@ -7,6 +7,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 # Create your views here.
+def start_page(request):
+    return redirect('users:login')
+
 def user_register(request):
     registered = False
 
@@ -21,6 +24,7 @@ def user_register(request):
             #links user to a Profile model (so they can upload profile pics etc.)
             Profile.objects.create(user=user)
             registered = True
+
         else:
             print(user_reg_form.errors)
         
