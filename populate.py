@@ -16,6 +16,18 @@ fakegen = Faker()
 
 def add_users(num_user=10, seed=None):
     np.random.seed(seed)
+
+    #add profile to superuser if exists:
+    try:
+        u1 = User.objects.get(id=1)
+        gender = np.random.choice(["M", "F"], p=[0.5, 0.5])
+        age = random.randint(18, 100)
+        p = Profile.objects.get_or_create(user = u1, gender = gender, age = age)[0]
+        p.save()
+    except:
+        print("Superuser doesn't exist ! Please make one !")
+    
+    #add fake users and make a profile to each one of them:       
     names = [fakegen.unique.first_name() for _ in range(10)]
     for i in range(num_user):
         usrname = names[i]
@@ -58,7 +70,7 @@ def add_comments(seed=None):
 
 if __name__ == '__main__':
     print("populating script!")
-    #add_users()
-    #add_posts()
+    add_users()
+    add_posts()
     add_comments()
     print("populating complete!")

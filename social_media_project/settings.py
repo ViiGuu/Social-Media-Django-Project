@@ -16,7 +16,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 STATIC_DIR = BASE_DIR / 'static'
-MEDIA_DIR = BASE_DIR/'media'
+MEDIA_DIR = BASE_DIR/ 'media'
 
 
 # Quick-start development settings - unsuitable for production
@@ -71,6 +71,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'libraries': {
+            'my_templatetag': 'posts_app.templatetags.return_item'
+        }
         },
     },
 ]
@@ -138,10 +141,6 @@ STATIC_ROOT = BASE_DIR / 'assests'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# Media
-MEDIA_ROOT = MEDIA_DIR
-MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

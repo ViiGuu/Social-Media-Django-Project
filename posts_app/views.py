@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from main.models import Post, Comment
+from profile_app.models import Profile
+
 
 
 # Create your views here.
 def all_posts(request):
     posts = Post.objects.all()
-    return render(request, 'posts_app/all_posts.html', {'posts': posts})
+    num_comments = [len(Comment.objects.filter(post_id=post.id)) for post in posts]
+    user_images = list(Profile.objects.values_list('profile_pic', flat=True))
+    print(user_images[0])
+    return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'user_images': user_images})
 
 
 def post_page(request, slug):

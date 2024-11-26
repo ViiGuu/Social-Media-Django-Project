@@ -8,7 +8,7 @@ class Post(models.Model):
     body = models.TextField()    
     slug = models.SlugField()
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(default="christmas_gift.jpeg", upload_to='media/', blank=True)
+    image = models.ImageField(default="post_images/christmas_gift.jpeg", upload_to='post_images/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
