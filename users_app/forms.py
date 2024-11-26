@@ -1,4 +1,4 @@
-from main.models import UserInfo
+from main.models import Profile
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
@@ -30,5 +30,5 @@ class UserRegistrationForm(forms.Form):
 
 class UserProfileInfoForm(forms.Form):
     class Meta:
-        model = UserInfo
+        model = Profile
         fields = ('profile_pic')

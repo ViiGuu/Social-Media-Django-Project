@@ -17,9 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users_app.views import *
+from profile_app import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('users_app.urls')),
+    path('users/', include('users_app.urls')),
     path('posts/', include('posts_app.urls')),
+    path('', views.index, name='index'),
+    path('profile/', views.profile_view, name="profile"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
