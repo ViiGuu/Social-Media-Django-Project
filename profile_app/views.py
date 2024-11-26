@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from profile_app.models import Profile
 
 def index(request):
     return render (request,'index.html')
@@ -7,7 +8,7 @@ def index(request):
 #view profile
 @login_required
 def profile_view(request):
-    profile = request.user.profile
-    return render(request, 'profile.html', {'profile': profile})
+    profile = Profile.objects.get(user=request.user)
+    return render(request, 'profile_app/profile.html', {'profile': profile})
 
 #update profile
