@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}All Posts{% endblock %}
+
+{% block content %}
+
+{% if posts %}
+{% for post in posts %}
+    <div class='w-50 border px-2 rounded'>
+        
+        <div class="d-flex flex-column fst-italic">
+            <div class="d-flex gap-2 align-items-center py-2 fs-6 fst-italic">
+                <img src="https://placeholder.pics/svg/80" width=40 alt="User" class="rounded-circle mb-2">
+                <span>{{ post.author }}</span>
+                <span class='text-black-50'>{{ post.date }}</span>
+            </div>
+            <div>
+                <h4>{{ post.title }}</h4>
+                <p> {{ post.body }} </p>
+            </div>
+            
+        </div>
+        <div class='rounded'>
+            <img src="https://images.unsplash.com/photo-1732465286852-a0b95393a90d?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top rounded" alt="...">
+        </div>
+        
+        <div class="d-flex justify-content-between py-2 fs-6 text-black-50">
+            
+            <a href="#" class='fst-italic' style='text-decoration:none; color:gray'>
+                <i class="fas fa-comment me-2"></i> Comment
+            </a>
+            <a href="#" class='fst-italic' style='text-decoration:none; color:gray'>comments 5</a>
+        </div>
+    </div>
+{% endfor %}
+
+
+{% else %}
+    <h5>Nothing posted yet</h5>
+{% endif %}
+{% endblock %}
