@@ -2,7 +2,7 @@ from django.shortcuts import render
 from users_app.forms import UserRegistrationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from main.models import UserInfo
+from main.models import Profile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
@@ -19,7 +19,7 @@ def user_register(request):
                 password=user_reg_form.cleaned_data['password'])
             
             #links user to a UserInfo model (so they can upload profile pics etc.)
-            UserInfo.objects.create(user=user)
+            Profile.objects.create(user=user)
             registered = True
         else:
             print(user_reg_form.errors)

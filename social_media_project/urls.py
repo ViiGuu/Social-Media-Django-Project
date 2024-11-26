@@ -26,7 +26,7 @@ urlpatterns = [
     path('users/', include('users_app.urls')),
     path('posts/', include('main.urls')),
     path('', views.index, name='index'),
-    path('profile/',views.profile_view, name='profile'),
+    path('profile/', views.profile_view, name="profile"),
 ]
 
 if settings.DEBUG:
