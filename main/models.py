@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 # Create your models here.
 
@@ -9,17 +8,17 @@ class Post(models.Model):
     body = models.TextField()    
     slug = models.SlugField()
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(default="christmas_gift.jpeg", upload_to='media/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
-class UserInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField( upload_to='photos/',blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return  self.author.username + "'s comment on " + self.post.title + " by " + self.post.author.username

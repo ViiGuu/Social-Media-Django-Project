@@ -1,0 +1,18 @@
+{% extends "yamit_base.html"%}
+
+{% block title %}
+    Blog posts
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Posts</h1>
+    {% for post in posts %}
+        <h4>
+            <a href = "{% url 'posts_app:page' slug=post.slug %}">{{post.title}}</a>
+        </h4>
+        <p>{{post.date}} by {{post.author}}</p>
+    {% endfor %}
+</section>
+{% endblock%}    
+
