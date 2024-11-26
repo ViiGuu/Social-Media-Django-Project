@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import timezone
-import datetime
-from profile_app.models import Profile
 
 # Create your models here.
 
@@ -11,12 +8,17 @@ class Post(models.Model):
     body = models.TextField()    
     slug = models.SlugField()
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(default="christmas_gift.jpeg", upload_to='media/', blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return  self.author.username + "'s comment on " + self.post.title + " by " + self.post.author.username
