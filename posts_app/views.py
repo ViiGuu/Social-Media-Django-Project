@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from main.models import Post, Comment
 
+
 # Create your views here.
 def all_posts(request):
     posts = Post.objects.all()
     return render(request, 'posts_app/all_posts.html', {'posts': posts})
+
 
 def post_page(request, slug):
     post = Post.objects.get(slug=slug)
@@ -15,4 +17,3 @@ def post_page(request, slug):
         new_comment = Comment.objects.get_or_create(post = post, author = request.user, body=body)[0]
         new_comment.save()            
     return render(request, 'posts_app/post_page.html', {'post':post, 'post_id': post.id, 'comments': comments})
-

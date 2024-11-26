@@ -24,10 +24,10 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('admin/', admin.site.urls),
-    path('users/', include('users_app.urls')),
+    path('', include('users_app.urls')),
     path('posts/', include('main.urls')),
-    #path('', views.index, name='index'), FIX
     path('profile/', include('profile_app.urls')),
+
 ]
 
 if settings.DEBUG:
