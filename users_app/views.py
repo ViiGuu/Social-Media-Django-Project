@@ -53,7 +53,7 @@ def user_login(request):
             print(f"Login failed for user: {username}")
             return HttpResponse("Invalid login details")
     else:
-        return render(request, 'login.html') #placeholder html for testing
+        return render(request, 'login.html')
     
 @login_required
 def user_logout(request):
