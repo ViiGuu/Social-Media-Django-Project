@@ -17,6 +17,10 @@
                         <span class="fw-bold text-capitalize">{{ post.author }}</span>
                         <span class="text-black-50">{{ post.date }}</span>
                     </div>
+                    <div class="text-capitalize">
+                        <h4><a style="text-decoration: none; color:black" href = "{% url 'posts_app:page' slug=post.slug %}">{{post.title}}</a></h4>
+                        
+                    </div>
                     <div>
                         <p>{{ post.body }}</p>
                     </div>
