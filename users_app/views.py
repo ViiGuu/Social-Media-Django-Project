@@ -19,7 +19,9 @@ def user_register(request):
                 password=user_reg_form.cleaned_data['password'])
             
             #links user to a Profile model (so they can upload profile pics etc.)
-            Profile.objects.create(user=user)
+            Profile.objects.create(user=user,
+                age=user_reg_form.cleaned_data['age'],
+                gender=user_reg_form.cleaned_data['gender'])
             registered = True
         else:
             print(user_reg_form.errors)

@@ -6,6 +6,12 @@ from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(forms.Form):
     username = forms.CharField()
+    age = forms.IntegerField()
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female')
+    ]
+    gender = forms.ChoiceField(choices=GENDER_CHOICES)
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -26,7 +32,7 @@ class UserRegistrationForm(forms.Form):
 
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ('username', 'age', 'gender', 'password')
 
 class UserProfileInfoForm(forms.Form):
     class Meta:
