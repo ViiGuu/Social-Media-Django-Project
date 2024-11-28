@@ -27,6 +27,7 @@ class UserRegistrationForm(forms.Form):
         label="Password",
     )
     
+    
     confirm_password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
