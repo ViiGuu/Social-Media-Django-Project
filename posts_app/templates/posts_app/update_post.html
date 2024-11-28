@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load return_item %}
+
+{% block title %}New Post{% endblock %}
+
+{% block content %}
+<h1>Update Post</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'posts_app:my_posts' %}" class="btn btn-secondary">Back to My posts</a>
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+{% endblock %}

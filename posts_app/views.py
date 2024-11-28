@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from main.models import Post, Comment
 from profile_app.models import Profile
 from django.contrib.auth.decorators import login_required
+from .forms import PostForm
+from django.utils.text import slugify
 
 
 
@@ -43,3 +45,34 @@ def delete_post(request, post_id):
     user = request.user
     posts = user.posts.all()
     return render(request, 'posts_app/my_posts.html', {'posts':posts})
+
+
+@login_required
+def new_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.slug = slugify(post.title)
+            post.save()
+            return redirect('posts_app:my_posts')
+    else:
+        form = PostForm()
+
+    return render(request, 'posts_app/new_post.html', {'form': form})
+
+
+@login_required
+def update_post(request, id):
+    post = Post.objects.get(id=id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('posts_app:all_posts')
+    else:
+        form = PostForm(instance=post)
+    
+    return render(request, 'posts_app/update_post.html', {'form': form})
+    
