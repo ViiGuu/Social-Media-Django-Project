@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    profile_pic = models.ImageField(default = 'profile_images/coffee_image_3.jpg', upload_to='profile_images/',blank=True, null=True)
+    profile_pic = models.ImageField(default = 'profile_images/user.png', upload_to='profile_images/',blank=True, null=True)
     gender = models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='M', max_length=1)
     age = models.IntegerField(default=None)
 
