@@ -9,13 +9,15 @@
   
     <div class="container d-flex justify-content-center align-items-center ">
         <div class="row justify-content-center w-100">
-            <div class="col-12 col-md-8 col-lg-6 border px-2 rounded">
+            <div class="col-12 col-md-8 col-lg-6 border rounded">
                 <div class="d-flex flex-column">
                     <div class="d-flex gap-2 align-items-center py-2 fs-6 fst-italic">
                         {% comment %} <img style="object-fit: contain;" src="{{ user_images|return_item:post.author.id }}" width="40" alt="User" class="rounded-circle mb-2 border"> {% endcomment %}
                         <img style="object-fit: cover;" src="{{ post.image.url }}" width="60" height="60" alt="User" class="rounded-circle mb-2 border">
+                       <div class="d-flex flex-column">
                         <span class="fw-bold text-capitalize">{{ post.author }}</span>
-                        <span class="text-black-50">{{ post.date }}</span>
+                        <span style="font-size: 12px" class="text-muted">{{ post.date }}</span>
+                       </div>
                     </div>
                     <div class="text-capitalize">
                         <h4><a style="text-decoration: none; color:black" href = "{% url 'posts_app:page' slug=post.slug %}">{{post.title}}</a></h4>
@@ -28,11 +30,31 @@
                 <div class="">
                     <img src="{{ post.image.url }}" class="card-img-top" alt="...">
                 </div>
-                <div class="d-flex justify-content-between py-4 fs-6 text-black-50">
-                    <a href="{% url 'posts_app:page' slug=post.slug %}" class="fst-italic" style="text-decoration: none; color: gray;">
-                        <i class="fas fa-comment me-2"></i> Comment
-                    </a>
-                    <a href="{% url 'posts_app:page' slug=post.slug %}" class="fst-italic" style="text-decoration: none; color: gray;">comments {{ num_comments|return_item:post.id }}</a>
+                <div class=" pt-4 text-muted">
+                  
+                    <div class=" d-flex justify-content-between align-items-center">
+                        <div><i class="text-primary fas fa-thumbs-up m-1"></i>5</div>
+                       
+                        <div><a href="{% url 'posts_app:page' slug=post.slug %}" class="fst-italic" style="text-decoration: none; color: gray;"> {{ num_comments|return_item:post.id }}                           
+                        </a>
+                        <span>comments</span></div>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center gap-5 py-2">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-thumbs-up rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i>
+                            <span style="font-size:14px">Like</span>
+                        </div>
+                       <div  class="d-flex flex-column align-items-center">
+                        <i class="fas fa-comment rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i>
+                        <a href="{% url 'posts_app:page' slug=post.slug %}"  style="text-decoration: none; color: gray; font-size:14px">Comment
+                        </a>
+                        
+                       </div>
+                       <div class="d-flex flex-column align-items-center ">
+                        <i class="fas fa-share-alt rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i> 
+                        <span style="font-size:14px">Share</span>
+                       </div>
+                       </div>                    
                 </div>
             </div>
         </div>

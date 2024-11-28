@@ -5,15 +5,35 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 class UserRegistrationForm(forms.Form):
-    username = forms.CharField()
-    age = forms.IntegerField()
-    GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female')
-    ]
-    gender = forms.ChoiceField(choices=GENDER_CHOICES)
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username'}))
+    age = forms.IntegerField(widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your age'
+        }),
+        label="Age")
+    
+    gender = forms.ChoiceField(
+        choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other')],
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        }),
+        label="Gender",
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter password'
+        }),
+        label="Password",
+    )
+    
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm password'
+        }),
+        label="Confirm Password",
+    )
 
     def clean(self):
         cleaned_data = super().clean()
