@@ -8,6 +8,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
 # Create your views here.
+
+def index(request):
+    return render(request, 'index.html')
+
+
 def user_register(request):
     registered = False
 
@@ -53,9 +58,9 @@ def user_login(request):
             print(f"Login failed for user: {username}")
             return HttpResponse("Invalid login details")
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html') #placeholder html for testing
     
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect('users:login')
+    return redirect('users:index')
