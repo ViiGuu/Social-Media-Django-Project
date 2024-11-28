@@ -12,8 +12,7 @@
             <div class="col-12 col-md-8 col-lg-6 border rounded">
                 <div class="d-flex flex-column">
                     <div class="d-flex gap-2 align-items-center py-2 fs-6 fst-italic">
-                        {% comment %} <img style="object-fit: contain;" src="{{ user_images|return_item:post.author.id }}" width="40" alt="User" class="rounded-circle mb-2 border"> {% endcomment %}
-                        <img style="object-fit: cover;" src="{{ post.image.url }}" width="60" height="60" alt="User" class="rounded-circle mb-2 border">
+                        <img style="object-fit: cover;" src="{{ post.author.profile.profile_pic.url }}" width="60" height="60" alt="User" class="rounded-circle mb-2 border">
                        <div class="d-flex flex-column">
                         <span class="fw-bold text-capitalize">{{ post.author }}</span>
                         <span style="font-size: 12px" class="text-muted">{{ post.date }}</span>
