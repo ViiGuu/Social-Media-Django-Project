@@ -33,9 +33,9 @@
                 <span>{{ user.username }}</span>
             </div>
            
-            <button class="btn btn-danger">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
+            <a href="{% url 'users:logout' %}" class="btn btn-danger">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
            </div>
           
           </div>

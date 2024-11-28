@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from users_app.forms import UserRegistrationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from profile_app.models import Profile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -52,4 +53,9 @@ def user_login(request):
             print(f"Login failed for user: {username}")
             return HttpResponse("Invalid login details")
     else:
-        return render(request, 'login.html') #placeholder html for testing
+        return render(request, 'login.html')
+    
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('users:login')
