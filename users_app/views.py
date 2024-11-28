@@ -11,6 +11,8 @@ from django.db import transaction
 # Create your views here.
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('posts_app:all_posts')
     return render(request, 'index.html')
 
 
