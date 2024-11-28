@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from profile_app.models import Profile
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.db import transaction
 
 # Create your views here.
 
@@ -20,22 +21,30 @@ def user_register(request):
         user_reg_form = UserRegistrationForm(data=request.POST)
 
         if user_reg_form.is_valid():
-            user = User.objects.create_user(
-                username=user_reg_form.cleaned_data['username'], 
-                password=user_reg_form.cleaned_data['password'])
-            
-            #links user to a Profile model (so they can upload profile pics etc.)
-            Profile.objects.create(user=user,
-                age=user_reg_form.cleaned_data['age'],
-                gender=user_reg_form.cleaned_data['gender'])
-            registered = True
+            try: 
+                with transaction.atomic():
+                    user = User.objects.create_user(
+                        username=user_reg_form.cleaned_data['username'], 
+                        password=user_reg_form.cleaned_data['password'])
+                    
+                    #links user to a Profile model (so they can upload profile pics etc.)
+                    Profile.objects.create(user=user,
+                        age=user_reg_form.cleaned_data['age'],
+                        gender=user_reg_form.cleaned_data['gender'])
+                    
+                    login(request, user)
+
+                    registered = True
+                    return redirect('profile_app:profile')
+            except Exception as e: #maybe we want more specific error handling in the future
+                print(f"Error during registration: {e}")
         else:
             print(user_reg_form.errors)
         
     else:
         user_reg_form = UserRegistrationForm()
 
-    return render(request, 'registration_form.html', { #placeholder html for testing
+    return render(request, 'registration_form.html', {
         'user_reg_form' : user_reg_form, 
         'registered' : registered})
 
@@ -49,8 +58,6 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
                 return redirect('posts_app:all_posts')
-                # return render(request, 'all_posts.html') #placeholder html for testing, remove later and return HttpResponseRedirect below instead
-                # return HttpResponseRedirect(reverse('')) #redirect to home/index page once it's implemented
             else:
                 return HttpResponse('User not active')
             
@@ -58,7 +65,7 @@ def user_login(request):
             print(f"Login failed for user: {username}")
             return HttpResponse("Invalid login details")
     else:
-        return render(request, 'login.html') #placeholder html for testing
+        return render(request, 'login.html')
     
 @login_required
 def user_logout(request):
