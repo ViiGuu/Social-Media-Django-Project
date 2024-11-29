@@ -27,7 +27,9 @@
                     </div>
                 </div>
                 <div class="">
+                    {% if post.image %}
                     <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+                    {% endif %}
                 </div>
                 <div class=" pt-4 text-muted">
                   

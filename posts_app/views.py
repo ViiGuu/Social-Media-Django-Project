@@ -33,7 +33,8 @@ def post_page(request, slug):
 def my_posts(request):
     user = request.user
     posts = user.posts.all()
-    return render(request, 'posts_app/my_posts.html', {'posts':posts})
+    profile = Profile.objects.get(user=request.user)
+    return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile})
 
 
 @login_required
@@ -47,6 +48,8 @@ def delete_post(request, post_id):
 
 @login_required
 def new_post(request):
+    profile = Profile.objects.get(user=request.user)
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -58,11 +61,12 @@ def new_post(request):
     else:
         form = PostForm()
 
-    return render(request, 'posts_app/new_post.html', {'form': form})
+    return render(request, 'posts_app/new_post.html', {'form': form, 'profile': profile})
 
 
 @login_required
 def update_post(request, id):
+    profile = Profile.objects.get(user=request.user)
     post = Post.objects.get(id=id)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
@@ -72,5 +76,5 @@ def update_post(request, id):
     else:
         form = PostForm(instance=post)
     
-    return render(request, 'posts_app/update_post.html', {'form': form})
+    return render(request, 'posts_app/update_post.html', {'form': form, 'profile': profile})
     
