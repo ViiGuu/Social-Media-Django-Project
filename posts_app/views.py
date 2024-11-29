@@ -12,10 +12,8 @@ from django.utils.text import slugify
 def all_posts(request):
     posts = Post.objects.all()
     num_comments = [len(Comment.objects.filter(post_id=post.id)) for post in posts]
-    user_images = list(Profile.objects.values_list('profile_pic', flat=True))
-    print(user_images[0])
     profile = Profile.objects.get(user=request.user)
-    return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'user_images': user_images,  'profile': profile})
+    return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'profile': profile})
 
 
 @login_required
