@@ -43,7 +43,8 @@ def delete_post(request, post_id):
     post.delete()
     user = request.user
     posts = user.posts.all()
-    return render(request, 'posts_app/my_posts.html', {'posts':posts})
+    profile = Profile.objects.get(user=request.user)
+    return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile })
 
 
 @login_required
@@ -72,7 +73,7 @@ def update_post(request, id):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
-            return redirect('posts_app:all_posts')
+            return redirect('posts_app:my_posts')
     else:
         form = PostForm(instance=post)
     
