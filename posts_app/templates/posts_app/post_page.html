@@ -34,6 +34,7 @@
             <h4 class="mb-3">Comments</h4>
             {% for comment in comments %}
             <div class="comment mb-1 p-2 border rounded">
+                
                 <p class="mb-1 text-capitalize"><strong>{{ comment.author }} </strong> <span style="font-size: 12px" class="text-muted">on {{ comment.date }}</span></p>
                 <p>{{ comment.body }}</p>
             </div>
