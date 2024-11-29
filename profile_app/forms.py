@@ -7,7 +7,8 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['profile_pic', 'gender', 'age']
 
         widgets = {
-            'gender': forms.Select(choices=[('M', 'Male'), ('F', 'Female')]),
-            'age': forms.NumberInput(attrs={'min': 0}),
+            'profile_pic': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'gender': forms.Select(choices=[('M', 'Male'), ('F', 'Female')], attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'min': 0, 'class': 'form-control'}),
         }
 
