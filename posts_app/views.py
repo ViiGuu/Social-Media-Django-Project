@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from main.models import Post, Comment
 from profile_app.models import Profile
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.utils.text import slugify
 
 # Create your views here.
@@ -89,36 +89,36 @@ def update_post(request, id):
             return redirect('posts_app:my_posts')
     else:
         form = PostForm(instance=post)
-    
     return render(request, 'posts_app/update_post.html', {'form': form, 'profile': profile})
 
 
 @login_required
 def my_comments(request):
     usr = request.user
-    comments = usr.comments.all()
+    comments = usr.user_comments.all()
     profile = usr.profile
     return render(request, 'posts_app/my_comments.html', {'comments': comments, 'profile': profile})
- 
+    
 @login_required
 def update_comment(request, id):
     profile = request.user.profile
     comment = Comment.objects.get(id=id)
+    others_comments = filter(lambda comment: comment.author != profile.user, comment.post.post_comments.all())
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=comment)
+        form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
             return redirect('posts_app:my_comments')
     else:
-        form = PostForm(instance=comment)
-    
-    return render(request, 'posts_app/update_comment.html', {'form': form, 'profile': profile})
+        form = CommentForm(instance=comment)
+    return render(request, 'posts_app/update_comment.html', {'form': form, 'others_comments': others_comments,
+                                                             'comment': comment, 'profile': profile})
     
 @login_required
 def delete_comment(request, comment_id):
     usr = request.user
     profile = usr.profile
-    comments = Comment.objects.filter(author=usr)#usr.comments.all()
+    comments = usr.user_comments.all()
 
     if request.method == 'POST':
         comment = Comment.objects.get(id=comment_id)

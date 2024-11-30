@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load return_item %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block content %}
+
+<h1>Edit Comment</h1>
+<p>Your comment on "{{comment.post.title}}" post by {{comment.post.author}}:</p>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <a href="{% url 'posts_app:my_comments' %}" class="btn btn-secondary">Back to My Comments</a>
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+<div class="container row">
+<div class="col-6 col-md-8 col-lg-6 border rounded">
+    <div class="d-flex flex-column">
+        <div class="d-flex gap-2 align-items-center py-2 fs-6 fst-italic">
+            <img style="object-fit: cover;" src="{{ comment.post.author.profile.profile_pic_url }}" width="60" height="60" alt="User" class="rounded-circle mb-2 border">
+           <div class="d-flex flex-column">
+            <span class="fw-bold text-capitalize">{{ comment.post.author }}</span>
+            <span style="font-size: 12px" class="text-muted">{{ comment.post.date }}</span>
+           </div>
+        </div>
+        <div class="text-capitalize">
+            <h4><a style="text-decoration: none; color:black" href = "{% url 'posts_app:page' slug=comment.post.slug %}">{{comment.post.title}}</a></h4>
+            
+        </div>
+        <div>
+            <p>{{ comment.post.body }}</p>
+        </div>
+    </div>
+    <div class="">
+        {% if comment.post.image %}
+        <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+        {% endif %}
+    </div>
+</div>
+
+    <div class="col-6">
+        <h4 class="mb-3">Comments</h4>
+        {% for comment in others_comments %}
+                <div class="comment mb-1 p-2 border rounded">
+                <p class="mb-1 text-capitalize"><strong>{{ comment.author }} </strong> <span style="font-size: 12px" class="text-muted">on {{ comment.date }}</span></p>
+                <p>{{ comment.body }}</p>
+                </div>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
