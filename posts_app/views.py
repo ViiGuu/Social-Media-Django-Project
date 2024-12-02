@@ -41,10 +41,6 @@ def update_comment(request, comment_id, slug):
     
 @login_required
 def delete_comment(request, comment_id, slug):
-    usr = request.user
-    profile = usr.profile
-    comments = usr.user_comments.all()
-
     if request.method == 'POST':
         comment = Comment.objects.get(id=comment_id)
         comment.delete()
