@@ -69,6 +69,25 @@ def user_login(request):
     else:
         return render(request, 'login.html') #placeholder html for testing
     
+def user_timeout(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return redirect('posts_app:all_posts')
+            else:
+                return HttpResponse('User not active')
+            
+        else:
+            print(f"Login failed for user: {username}")
+            return HttpResponse("Invalid login details")
+    else:
+        return render(request, 'user_timeout.html')
+    
 @login_required
 def user_logout(request):
     logout(request)
