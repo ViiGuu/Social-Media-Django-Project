@@ -9,7 +9,7 @@ from django.utils.text import slugify
 @login_required
 def all_posts(request):
     posts = Post.objects.all()
-    num_comments = [len(Comment.objects.filter(post_id=post.id)) for post in posts]
+    num_comments = [len(post.post_comments.all()) for post in posts]
     profile = Profile.objects.get(user=request.user)
     return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'profile': profile})
 
@@ -58,8 +58,9 @@ def delete_comment(request, comment_id, slug):
 def my_posts(request):
     user = request.user
     posts = user.posts.all()
+    num_comments = [len(post.post_comments.all()) for post in posts]
     profile = Profile.objects.get(user=request.user)
-    return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile})
+    return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile, 'num_comments': num_comments})
 
 
 @login_required
@@ -120,8 +121,12 @@ def update_post(request, id):
 
 #change it to "posts I commented"
 @login_required
-def my_comments(request):
+def posts_commented(request):
     usr = request.user
-    comments = usr.user_comments.all()
+    user_comments = usr.user_comments.all()
+    posts_ids = list(dict.fromkeys([comment.post.id for comment in user_comments]))
+    print(posts_ids)
+    posts = [Post.objects.get(id=id) for id in posts_ids]
+    num_comments = [len(post.post_comments.all()) for post in posts]
     profile = usr.profile
-    return render(request, 'posts_app/my_comments.html', {'comments': comments, 'profile': profile})
+    return render(request, 'posts_app/posts_commented.html', {'posts': posts, 'profile': profile, 'num_comments': num_comments})
