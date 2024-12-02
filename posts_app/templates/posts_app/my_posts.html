@@ -1,8 +1,101 @@
 {% extends "base.html" %}
 {% load return_item %}
-{% block title %}All Posts{% endblock %}
+{% block title %}My posts{% endblock %}
 
 {% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-center mb-4">
+        <a href="{% url 'posts_app:new_post' %}" class="text-decoration-none btn btn-primary">
+            <i class="fas fa-plus me-2"></i> New Post
+        </a>
+    </div>
+
+    {% if posts %}
+        {% for post in posts %}
+        <div class="card mb-4 shadow-sm w-100 mx-auto" style="max-width: 600px;">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <img src="{{ profile.profile_pic_url }}" 
+                         alt="User" 
+                         width="50" 
+                         height="50" 
+                         class="rounded-circle" 
+                         style="object-fit: cover;">
+                    <div>
+                        <span class="fw-bold">{{ post.author }}</span> <br>
+                        <span class="text-muted small">{{ post.date }}</span>
+                    </div>
+                </div>
+
+                <h5 class="card-title">
+                    <a href="{% url 'posts_app:page' slug=post.slug %}" class="text-decoration-none text-dark">
+                        {{ post.title }}
+                    </a>
+                </h5>
+                <p class="card-text">{{ post.body }}</p>
+
+                {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid rounded" alt="Post Image">
+                {% endif %}
+            </div>
+             <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a href="{% url 'posts_app:page' slug=post.slug %}" 
+                           class="text-decoration-none text-muted me-3">
+                            <i class="fas fa-comment"></i> Comment
+                        </a>
+                        <a href="{% url 'posts_app:page' slug=post.slug %}" 
+                           class="text-decoration-none text-muted">
+                            Comments ({{ num_comments|return_item:post.id }})
+                        </a>
+                    </div>
+
+                    {% if user == post.author %}
+                    <div class="d-flex gap-3 ">
+                        <form action="{% url 'posts_app:update_post' post.id %}" method="get" class="m-0">
+                            <button type="submit" class="text-muted btn p-0 border-0 bg-transparent">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </button>
+                        </form>
+                        <form id="delete-form-{{ post.id }}" action="{% url 'posts_app:delete_post' post.id %}" class="m-0 ">
+                            {% csrf_token %}
+                            <button type="button" class="text-muted btn p-0 border-0 bg-transparent" onclick="confirmDelete({{ post.id }})">
+                                <i class="fas fa-trash-alt me-1"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="text-center">
+        <h5>You don't have any published posts yet.</h5>
+        {% comment %} <a href="{% url 'posts_app:new_post' %}" class="text-decoration-none text-dark">
+            <i class="fas fa-plus"></i> Create New Post
+        </a> {% endcomment %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- JS Confirm Delete -->
+<script>
+    function confirmDelete(postId) {
+        const confirmed = confirm("Are you sure you want to delete this post?");
+        if (confirmed) {
+            document.getElementById(`delete-form-${postId}`).submit();
+        }
+    }
+</script>
+
+{% endblock %}
+
+
+
+
+{% comment %} {% block content %}
 {% if posts %}
 <a href="{% url 'posts_app:new_post' %}">New Post</a>
     {% for post in posts %}
@@ -73,4 +166,4 @@
     <a href="{% url 'posts_app:new_post' %}">New Post</a>
 {% endif %}
 
-{% endblock %}
+{% endblock %} {% endcomment %}
