@@ -40,20 +40,20 @@
                         </a>
                         <span>comments</span></div>
                     </div>
-                    <div class="d-flex justify-content-center align-items-center gap-5 py-2">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-thumbs-up rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i>
-                            <span style="font-size:14px">Like</span>
+                    <div class="d-flex justify-content-between align-items-center gap-5 py-4 ">
+                        <div class="d-flex align-items-center gap-2 btn btn-light">
+                            <i class="fas fa-thumbs-up text-muted"></i>
+                            <span style="font-size:14px;color: gray; ">Like</span>
                         </div>
-                       <div  class="d-flex flex-column align-items-center">
-                        <i class="fas fa-comment rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i>
+                       <div  class="d-flex align-items-center gap-2 btn btn-light">
+                        <i class="fas fa-comment text-muted"></i>
                         <a href="{% url 'posts_app:page' slug=post.slug %}"  style="text-decoration: none; color: gray; font-size:14px">Comment
                         </a>
                         
                        </div>
-                       <div class="d-flex flex-column align-items-center ">
-                        <i class="fas fa-share-alt rounded-circle p-2 border border-2 border-primary-subtle bg-primary-subtle"></i> 
-                        <span style="font-size:14px">Share</span>
+                       <div class="d-flex align-items-center gap-2 btn btn-light ">
+                        <i class="fas fa-share-alt text-muted"></i> 
+                        <span style="font-size:14px;color: gray; ">Share</span>
                        </div>
                        </div>                    
                 </div>
