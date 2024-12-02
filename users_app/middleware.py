@@ -24,9 +24,9 @@ class UserTimeoutMiddleware:
                         return redirect(f"{reverse('users:timeout')}?timeout=1")
                     
             except (ValueError, TypeError) as e:
+                print(f"Encountered error {e} when trying to time out user {request.user.id}")
                 logout(request)
                 request.session.flush()
-                print(f"Encountered error {e} when trying to time out user {request.user.id}")
 
             finally:
                 request.session['last_activity'] = timezone.now().isoformat()
