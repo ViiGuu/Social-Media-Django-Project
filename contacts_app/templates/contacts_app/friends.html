@@ -1,25 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %} All Users{% endblock %}
+{% block title %} Friends {% endblock %}
 
 {% block content %}
 <h1>Friends</h1>
 
-{% for request in user.received_friend_requests.all %}
-    <p>{{ request.from_user.username }} хочет добавить вас в друзья.</p>
-    <form method="post" action="{% url 'contacts_app:accept_request' request.id %}">
-        {% csrf_token %}
-        <button type="submit">Принять</button>
-    </form>
-    <form method="post" action="{% url 'contacts_app:reject_request' request.id %}">
-        {% csrf_token %}
-        <button type="submit">Отклонить</button>
-    </form>
-{% endfor %}
+<div style="border: 1px solid;">
+
+    {% for request in user.received_friend_requests.all %}
+        <p>{{ request.from_user.username }} wants to add you as a friend.</p>
+        <form method="post" action="{% url 'contacts_app:accept_request' request.id %}">
+            {% csrf_token %}
+            <button type="submit">Accept</button>
+        </form>
+        <form method="post" action="{% url 'contacts_app:reject_request' request.id %}">
+            {% csrf_token %}
+            <button type="submit">Reject</button>
+        </form>
+    {% endfor %}
+</div>
 
 <ul>
-    {% for user in users  %}
-    <li>{{user.username}} - {{user.id}} - {{user.profile}} - {{user.profile.user.id}}</li>
+    {% for friend in friends %}
+    <li>{{friend.username}}</li>
     {% endfor %}
 </ul>
 

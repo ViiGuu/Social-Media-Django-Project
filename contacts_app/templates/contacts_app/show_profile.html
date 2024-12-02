@@ -44,14 +44,42 @@
               <span class="text-muted ms-4">{{ profile.age }}</span>
             </div>
           </div>
+          
+        
 
-          <!-- Add to friends-->
+          <!--Friendship_status =====================-->
+        {% if friendship_status == 'pending' %}
+          <div>
+              <form method="post" action="{% url 'contacts_app:cancel_friend_request' profile.user.id %}">
+              {% csrf_token %}
+              Friend request: <span style="color: orange;">{{friendship_status}}</span>
+              <button class="btn btn-warning mt-3 mb-2 w-100" type="submit">Cancel Request</button>
+              </form>
+          </div>
 
-        <form method="post" action="{% url 'contacts_app:send_request' profile.user.id %}">
-            {% csrf_token %}
-            <button class="btn btn-primary mt-3 mb-2 w-100" type="submit">Add to friends</button>
-        </form>
-          <!-------------------->
+        {% elif is_friend %}
+          <div>
+              <form method="POST" action="{% url 'contacts_app:remove_friend' profile.user.id %}">
+                {% csrf_token %}
+                  <button class="btn btn-danger mt-3 mb-2 w-100" type="submit">Remove Friend</button>
+              </form>
+          </div>
+        
+
+
+
+        {% else %}
+            <div>
+                <form method="post" action="{% url 'contacts_app:send_request' profile.user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-success mt-3 mb-2 w-100" type="submit">Add to Friends</button>
+                </form>
+            </div>
+
+        {% endif %}
+    
+
+          <!---======================================--->
 
           <a
             href="{% url 'posts_app:all_posts' %}"

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models import Q
 
 # Create your models here.
 class Profile(models.Model):
@@ -19,3 +20,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+    
+    @property
+    def friends(self):
+        from contacts_app.models import Friendship
+        return User.objects.filter(
+            Q(friendships_as_user1__user2=self.user) | Q(friendships_as_user2__user1=self.user)
+        ).distinct()
