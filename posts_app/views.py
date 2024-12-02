@@ -19,12 +19,39 @@ def post_page(request, slug):
     post = Post.objects.get(slug=slug)
     comments = Comment.objects.filter(post_id=post.id)
     profile = Profile.objects.get(user=request.user)
-    
+
     if request.method == 'POST':
         body = request.POST.get('body')
         new_comment = Comment.objects.get_or_create(post = post, author = request.user, body=body)[0]
-        new_comment.save()            
-    return render(request, 'posts_app/post_page.html', {'post':post, 'post_id': post.id, 'comments': comments, 'profile': profile})
+        new_comment.save()          
+    return render(request, 'posts_app/post_page.html', {'post':post, 'post_id': post.id,
+                                                        'comments': comments, 'profile': profile})
+
+
+@login_required
+def update_comment(request, comment_id, slug):
+    comment = Comment.objects.get(id=comment_id)
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        comment.body = body
+        comment.save()
+        return redirect('posts_app:page', slug=slug)
+    else :
+        return render(request, 'posts_app:page', slug=slug)
+    
+@login_required
+def delete_comment(request, comment_id, slug):
+    usr = request.user
+    profile = usr.profile
+    comments = usr.user_comments.all()
+
+    if request.method == 'POST':
+        comment = Comment.objects.get(id=comment_id)
+        comment.delete()
+        return redirect('posts_app:page', slug=slug)
+    else :
+        return render(request, 'posts_app:page', slug=slug)
+       
 
 
 @login_required
@@ -91,38 +118,10 @@ def update_post(request, id):
         form = PostForm(instance=post)
     return render(request, 'posts_app/update_post.html', {'form': form, 'profile': profile})
 
-
+#change it to "posts I commented"
 @login_required
 def my_comments(request):
     usr = request.user
     comments = usr.user_comments.all()
     profile = usr.profile
     return render(request, 'posts_app/my_comments.html', {'comments': comments, 'profile': profile})
-    
-@login_required
-def update_comment(request, id):
-    profile = request.user.profile
-    comment = Comment.objects.get(id=id)
-    others_comments = filter(lambda comment: comment.author != profile.user, comment.post.post_comments.all())
-    if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            form.save()
-            return redirect('posts_app:my_comments')
-    else:
-        form = CommentForm(instance=comment)
-    return render(request, 'posts_app/update_comment.html', {'form': form, 'others_comments': others_comments,
-                                                             'comment': comment, 'profile': profile})
-    
-@login_required
-def delete_comment(request, comment_id):
-    usr = request.user
-    profile = usr.profile
-    comments = usr.user_comments.all()
-
-    if request.method == 'POST':
-        comment = Comment.objects.get(id=comment_id)
-        comment.delete()
-        return redirect('posts_app:my_comments')
-    else:
-        return render(request, 'posts_app/my_comments.html', {'comments':comments, 'profile': profile})
