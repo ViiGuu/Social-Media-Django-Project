@@ -23,13 +23,4 @@
     </div>
 </div>
 
-{% comment %} <h1>Update Post</h1>
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    
-   
-    <a href="{% url 'posts_app:my_posts' %}" class="btn btn-secondary">Back to My posts</a>
-    <button type="submit" class="btn btn-success">Update</button>
-</form> {% endcomment %}
 {% endblock %}
