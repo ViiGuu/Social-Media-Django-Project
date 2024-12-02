@@ -1,5 +1,5 @@
 from django import forms
-from main.models import Post, Comment
+from main.models import Post
 
 
 class PostForm(forms.ModelForm):
@@ -12,10 +12,3 @@ class PostForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter post content'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
-
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = [
-            'body'
-        ]

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from main.models import Post, Comment
 from profile_app.models import Profile
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm, CommentForm
+from .forms import PostForm
 from django.utils.text import slugify
 
 # Create your views here.
@@ -65,28 +65,12 @@ def my_posts(request):
 
 @login_required
 def delete_post(request, post_id):
-    user = request.user
-    posts = user.posts.all()
-    profile = Profile.objects.get(user=request.user)
-    if request.method == 'POST':
-        post = Post.objects.get(id=post_id)
-        post.delete()
-        return redirect('posts_app:my_posts')
-    else:
-        return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile })
-
-'''
-Irik's delete view:
-@login_required
-def delete_post(request, post_id):
     post = Post.objects.get(id=post_id)
     post.delete()
     user = request.user
     posts = user.posts.all()
     profile = Profile.objects.get(user=request.user)
     return render(request, 'posts_app/my_posts.html', {'posts':posts, 'profile': profile })
-'''
-
 
 @login_required
 def new_post(request):
