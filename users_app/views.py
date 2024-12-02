@@ -65,7 +65,7 @@ def user_login(request):
             
         else:
             print(f"Login failed for user: {username}")
-            return HttpResponse("Invalid login details")
+            return render(request, 'invalid_login.html')
     else:
         return render(request, 'login.html') #placeholder html for testing
     
@@ -84,7 +84,7 @@ def user_timeout(request):
             
         else:
             print(f"Login failed for user: {username}")
-            return HttpResponse("Invalid login details")
+            return render(request, 'invalid_login.html')
     else:
         return render(request, 'user_timeout.html')
     
