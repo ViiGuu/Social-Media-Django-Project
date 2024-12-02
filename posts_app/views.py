@@ -4,7 +4,7 @@ from profile_app.models import Profile
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm
 from django.utils.text import slugify
-
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -13,7 +13,7 @@ def all_posts(request):
     posts = Post.objects.all()
     num_comments = [len(Comment.objects.filter(post_id=post.id)) for post in posts]
     profile = Profile.objects.get(user=request.user)
-    return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'profile': profile})
+    return render(request, 'posts_app/all_posts.html', {'posts': posts, 'num_comments': num_comments, 'profile': profile,})
 
 
 @login_required
