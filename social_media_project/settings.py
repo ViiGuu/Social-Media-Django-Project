@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users_app',
     'profile_app',
     'posts_app',
+    'contacts_app',
 ]
 
 MIDDLEWARE = [
