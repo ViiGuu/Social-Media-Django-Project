@@ -17,7 +17,7 @@ def view_profile(request, user_id):
     is_friend = FriendshipRequest.are_friends(request.user, user)
 
     if request.user == user:
-        return redirect('profile_app:profile')
+        return redirect('profile_app:view_profile')
 
     friendship_status = FriendshipRequest.friendship_status(request.user, user)
 
