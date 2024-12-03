@@ -1,14 +1,17 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.decorators import login_required
+from bs4.diagnose import profile
+from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required
+from requests import request
 from profile_app.models import Profile
 from profile_app.forms import  ProfileUpdateForm
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 def index(request):
     return render (request,'index.html')
 
-#view profile
+#view own profile
 @login_required
 def profile_view(request):
     profile = request.user.profile
@@ -28,3 +31,10 @@ def update_profile(request):
         form = ProfileUpdateForm(instance=profile)
 
     return render(request, 'profile_app/update_profile.html', {'form': form, 'profile':profile})
+
+#view other user's profile
+@login_required
+def view_others_profile(request, username):
+    user = get_object_or_404(User,username=username) # Get the user of the post
+    other_profile = Profile.objects.get(user=user)  # Get the profile of user
+    return render(request, 'profile_app/view_profile.html', {'profile':other_profile})

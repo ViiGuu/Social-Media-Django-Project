@@ -14,7 +14,9 @@
                     <div class="d-flex gap-2 align-items-center py-2 fs-6 fst-italic">
                         <img style="object-fit: cover;" src="{{ post.author.profile.profile_pic_url }}" width="60" height="60" alt="User" class="rounded-circle mb-2 border">
                        <div class="d-flex flex-column">
-                        <span class="fw-bold text-capitalize">{{ post.author }}</span>
+                        <span class="fw-bold text-capitalize">
+                            <a style="text-decoration: none; color:black" href="{% url 'profile_app:view_others_profile' username=post.author.username%}">{{ post.author }}</a>
+                        </span>
                         <span style="font-size: 12px" class="text-muted">{{ post.date }}</span>
                        </div>
                     </div>
