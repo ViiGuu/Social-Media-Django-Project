@@ -34,10 +34,6 @@
                             </p>
                         </a>
 
-
-
-
-
                         {% if post.image %}
                         <a href="{% url 'posts_app:page' slug=post.slug %}" class="shadow-none d-block mb-3">
                             <img src="{{ post.image.url }}" 
@@ -51,7 +47,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-2 text-muted">
                                 <i class="fas fa-thumbs-up text-primary"></i>
-                                <small>5 Likes</small>
+                                <small>{{ num_likes|return_item:forloop.counter }} Likes</small>
                             </div>
                             <div>
                                 <a href="{% url 'posts_app:page' slug=post.slug %}" 
@@ -81,6 +77,25 @@
                             </button>
                         </div>
                     </div>
+                    <div class="d-flex justify-content-between align-items-center py-4 ">
+                        <div class="d-flex align-items-center gap-2 btn btn-light">
+                            <i class="fas fa-thumbs-up text-muted"></i>
+                            <form action="{% url 'posts_app:like' post.id %}" method="post">
+                                {% csrf_token %}
+                            <button type="submit"><span style="font-size:14px;color: gray; ">Like</span></button>
+                            </form>
+                        </div>
+                       <div  class="d-flex align-items-center gap-2 btn btn-light">
+                        <a href="{% url 'posts_app:page' slug=post.slug %}"><i class="fas fa-comment text-muted"></i></a>
+                        <a href="{% url 'posts_app:page' slug=post.slug %}"  style="text-decoration: none; color: gray; font-size:14px">Comment
+                        </a>
+                        
+                       </div>
+                       <div class="d-flex align-items-center gap-2 btn btn-light ">
+                        <i class="fas fa-share-alt text-muted"></i> 
+                        <span style="font-size:14px;color: gray; ">Share</span>
+                       </div>
+                       </div>                    
                 </div>
                 {% endfor %}
 
