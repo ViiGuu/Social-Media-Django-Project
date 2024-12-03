@@ -82,7 +82,7 @@
                             <i class="fas fa-thumbs-up text-muted"></i>
                             <form action="{% url 'posts_app:like' post.id %}" method="post">
                                 {% csrf_token %}
-                            <button type="submit"><span style="font-size:14px;color: gray; ">Like</span></button>
+                            <button style="all:unset" type="submit"><span style="font-size:14px;color: gray; ">Like</span></button>
                             </form>
                         </div>
                        <div  class="d-flex align-items-center gap-2 btn btn-light">
