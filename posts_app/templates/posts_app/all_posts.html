@@ -37,7 +37,7 @@
                         {% if post.image %}
                         <a href="{% url 'posts_app:page' slug=post.slug %}" class="shadow-none d-block mb-3">
                             <img src="{{ post.image.url }}" 
-                                 class="img-fluid rounded-3 shadow-sm" 
+                                 class="img-fluid rounded-3" 
                                  alt="{{ post.title }}">
                         </a>
                         {% endif %}
