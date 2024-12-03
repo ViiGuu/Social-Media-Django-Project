@@ -61,19 +61,20 @@
                         </div>
 
                         {% if user == post.author %}
-                        <div class="mt-2 d-flex gap-4 justify-content-end">
-                            <form action="{% url 'posts_app:update_post' post.id %}" method="get" class="m-0">
-                                <button type="submit" style='font-size:12px' class="text-muted btn p-0 border-0 bg-transparent">
-                                     Edit
+                        <div class="mt-4 d-flex gap-2 justify-content-end">
+                             <form action="{% url 'posts_app:update_post' post.id %}" method="get" class="m-0">
+                                <button type="submit" class="btn btn-light btn-sm d-flex align-items-center gap-2">
+                                 Edit
                                 </button>
                             </form>
-                            <form id="delete-form-{{ post.id }}" action="{% url 'posts_app:delete_post' post.id %}" class="m-0 ">
+                            <form id="delete-form-{{ post.id }}" action="{% url 'posts_app:delete_post' post.id %}" method="post" class="m-0">
                                 {% csrf_token %}
-                                <button type="button" style='font-size:12px' class="text-muted btn p-0 border-0 bg-transparent" onclick="confirmDelete('{{ post.id }}')">
-                                    Delete
+                                <button type="button" class="btn btn-light btn-sm d-flex align-items-center gap-2" onclick="confirmDelete('{{ post.id }}')">
+                                   Delete
                                 </button>
                             </form>
                         </div>
+                        
                         {% endif %}
                     </div>
                 </div>
