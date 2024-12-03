@@ -53,6 +53,13 @@
             </li>
             <li class="nav-item">
               <a
+                class="nav-link {% if request.resolver_match.url_name == 'posts_commented' %}active{% endif %}"
+                href="{% url 'posts_app:posts_commented' %}"
+                >Posts I commented</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
                 class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}"
                 href="{% url 'profile_app:profile' %}"
                 >My Profile</a

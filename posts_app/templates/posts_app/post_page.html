@@ -31,35 +31,70 @@
             </div>
         </div>
 
-        <div class="row mb-4">
-            <div class="col-12">
-                <p>{{ post.body }}</p>
-            </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <p>{{ post.body }}</p>
         </div>
-         <div class="row mb-4">
-            <div class="col-12">
-                <h4 class="mb-3">Comments</h4>
-                {% for comment in comments %}
-                <div class="d-flex comment mb-3 gap-3">
-                    <div>
-                        <img src="{{ comment.author.profile.profile_pic_url }}" 
-                             class="rounded-circle border" 
-                             alt="User" 
-                             style="object-fit: cover; width: 48px; height: 48px;">
-                    </div>
-                     <div class="p-3 border rounded bg-light w-100">
-                        <p class="mb-1 text-capitalize">
-                            <strong>{{ comment.author }}</strong> 
-                            <span style="font-size: 12px" class="text-muted">on {{ comment.date }}</span>
-                        </p>
-                        <p>{{ comment.body }}</p>
+    </div>
+   
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="mb-3">Comments</h4>
+            {% for comment in comments %}
+            {% if comment.author == profile.user %}
+            <div class="d-flex comment mb-3 gap-3">
+                <div>
+                    <img src="{{ comment.author.profile.profile_pic_url }}" 
+                        class="rounded-circle border" 
+                        alt="User" 
+                        style="object-fit: cover; width: 48px; height: 48px;">
+                </div>
+                <div class="p-3 border rounded bg-light w-100">
+                    <p class="mb-1 text-capitalize"><strong>{{ comment.author }} </strong> <span style="font-size: 12px" class="text-muted">on {{ comment.date }}</span></p>
+                    <div id="insert-form{{forloop.counter}}" class="row"><p>{{ comment.body }}</p></div>
+                    <div class="row">
+                        <form class="col-2" id="delete-form{{forloop.counter}}" action="{% url 'posts_app:delete_comment' comment.id comment.post.slug%}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" value="delete" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                        </form>
+                        <div id ="edit-btn{{forloop.counter}}" class="col-2">
+                            <button class="btn btn-warning" id="add-form{{forloop.counter}}">Edit</button>
+                        </div>
+                        <script>
+                            document.getElementById('add-form{{forloop.counter}}').addEventListener("click", function () {
+                                document.getElementById("insert-form{{forloop.counter}}").innerHTML=
+                                `<form action="{% url 'posts_app:update_comment' comment.id comment.post.slug %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                    <textarea class="form-control" name="body" rows="4" required>{{comment.body}}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>`;
+                                document.getElementById("edit-btn{{forloop.counter}}").innerHTML=``;
+                            })
+                        </script>
                     </div>
                 </div>
-                {% empty %}
-                <p>No comments yet. Be the first to comment!</p>
-                {% endfor %}
             </div>
+            {% else %}
+            <div class="d-flex comment mb-3 gap-3">
+                <div>
+                    <img src="{{ comment.author.profile.profile_pic_url }}" 
+                         class="rounded-circle border" 
+                         alt="User" 
+                         style="object-fit: cover; width: 48px; height: 48px;">
+                </div>
+                <div class="comment mb-1 p-2 border rounded">
+                    <p class="mb-1 text-capitalize"><strong>{{ comment.author }} </strong> <span style="font-size: 12px" class="text-muted">on {{ comment.date }}</span></p>
+                    <p>{{ comment.body }}</p>
+                </div>
+            </div>
+            {% endif %}
+            {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
         </div>
+    </div>
+    {% endfor %}
 
         {% if user.is_authenticated %}
         <div class="row mt-4">
@@ -68,7 +103,7 @@
                 <form action="{% url 'posts_app:page' slug=post.slug %}" method="post">
                     {% csrf_token %}
                     <div class="mb-3">
-                        <textarea class="form-control" name="body" rows="4" placeholder="Add a comment..." required></textarea>
+                        <textarea class="form-control" name="body" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a href="{% url 'posts_app:my_posts' %}" class="btn btn-outline-primary">Cancel</a>

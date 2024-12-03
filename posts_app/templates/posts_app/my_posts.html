@@ -32,10 +32,10 @@
                         {{ post.title }}
                     </a>
                 </h5>
-                <p class="card-text">{{ post.body }}</p>
+                <a href="{% url 'posts_app:page' slug=post.slug %}" class="text-decoration-none text-dark"><p class="card-text">{{ post.body }}</p></a>
 
                 {% if post.image %}
-                <img src="{{ post.image.url }}" class="img-fluid rounded" alt="Post Image">
+                <a href="{% url 'posts_app:page' slug=post.slug %}"><img src="{{ post.image.url }}" class="img-fluid rounded" alt="Post Image"></a>
                 {% endif %}
             </div>
              <div class="card-footer bg-white">
@@ -47,7 +47,7 @@
                         </a>
                         <a href="{% url 'posts_app:page' slug=post.slug %}" 
                            class="text-decoration-none text-muted">
-                            Comments ({{ num_comments|return_item:post.id }})
+                            Comments ({{ num_comments|return_item:forloop.counter }})
                         </a>
                     </div>
 
@@ -60,7 +60,7 @@
                         </form>
                         <form id="delete-form-{{ post.id }}" action="{% url 'posts_app:delete_post' post.id %}" class="m-0 ">
                             {% csrf_token %}
-                            <button type="button" class="text-muted btn p-0 border-0 bg-transparent" onclick="confirmDelete({{ post.id }})">
+                            <button type="button" class="text-muted btn p-0 border-0 bg-transparent" onclick="confirmDelete('{{ post.id }}')">
                                 <i class="fas fa-trash-alt me-1"></i> Delete
                             </button>
                         </form>

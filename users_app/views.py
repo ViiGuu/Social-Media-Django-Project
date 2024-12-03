@@ -86,7 +86,7 @@ def user_timeout(request):
             print(f"Login failed for user: {username}")
             return render(request, 'invalid_login.html')
     else:
-        return render(request, 'user_timeout.html')
+        return render(request, 'timeout.html')
     
 @login_required
 def user_logout(request):
