@@ -1,7 +1,5 @@
-from bs4.diagnose import profile
 from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib.auth.decorators import login_required, permission_required
-from requests import request
+from django.contrib.auth.decorators import login_required
 from profile_app.models import Profile
 from profile_app.forms import  ProfileUpdateForm
 from django.contrib import messages

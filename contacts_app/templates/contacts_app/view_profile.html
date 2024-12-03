@@ -1,5 +1,5 @@
 {% extends "base.html" %} 
-{% block title %}Profile Page{% endblock %} 
+{% block title %}Show Profile{% endblock %} 
 {% block content %}
 <div class="container mt-4">
   <div class="row justify-content-center">
@@ -44,21 +44,45 @@
               <span class="text-muted ms-4">{{ profile.age }}</span>
             </div>
           </div>
-
-          <a
-            href="{% url 'profile_app:update_profile' %}"
-            class="btn btn-primary mt-3 mb-2 w-100"
-          >
-            Update Profile
-          </a>
           
+          <!--Friendship_status =====================-->
+        {% if friendship_status == 'pending' %}
+          <div>
+              <form method="post" action="{% url 'contacts_app:cancel_friend_request' profile.user.id %}">
+              {% csrf_token %}
+              Friend request: <span style="color: orange;">{{friendship_status}}</span>
+              <button class="btn btn-warning mt-3 mb-2 w-100" type="submit">Cancel Request</button>
+              </form>
+          </div>
+
+        {% elif is_friend %}
+          <div>
+              <form method="POST" action="{% url 'contacts_app:remove_friend' profile.user.id %}">
+                {% csrf_token %}
+                  <button class="btn btn-danger mt-3 mb-2 w-100" type="submit">Remove Friend</button>
+              </form>
+          </div>
+        
+
+
+
+        {% else %}
+            <div>
+                <form method="post" action="{% url 'contacts_app:send_request' profile.user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-success mt-3 mb-2 w-100" type="submit">Add to Friends</button>
+                </form>
+            </div>
+
+        {% endif %}
+          <!---======================================--->
+
           <!-- Back Button -->
           <div class="mt-4">
             <a href="{% url 'posts_app:all_posts' %}" class="btn btn-secondary">
               Back
             </a>
           </div>
-
         </div>
       </div>
     </div>
