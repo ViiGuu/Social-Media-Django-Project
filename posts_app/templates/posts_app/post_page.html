@@ -89,7 +89,7 @@
                   {% csrf_token %}
                   <button
                     type="button"
-                    value="delete"
+                    value="delete1"
                     class="btn btn-sm btn-outline-primary"
                     onclick="confirmDelete('{{forloop.counter}}')"
                   >
@@ -121,8 +121,10 @@
                     Delete
                   </button>
                           </div>
+                          
                       </form>`;
                       document.getElementById("edit-btn{{forloop.counter}}").innerHTML=``;
+                      document.querySelector('button[value="delete1"]').remove();
                   })
               </script>
               </div> 
