@@ -9,11 +9,22 @@ class Friendship(models.Model):
     user2 = models.ForeignKey(User, related_name='friendships_as_user2', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-class Meta:
-        unique_together = ('user1', 'user2')
-
-def __str__(self):
-    return f"{self.user1.username} - {self.user2.username}"
+    class Meta:
+            constraints = [
+                models.UniqueConstraint(
+                    fields=['user1', 'user2'],
+                    name='unique_friendship'
+                )
+            ]
+    
+    def __str__(self):
+        return f"{self.user1.username} - {self.user2.username}"
+    
+    
+    def save(self, *args, **kwargs):
+        if self.user1.id > self.user2.id:
+            self.user1, self.user2 = self.user2, self.user1
+        super().save(*args, **kwargs)
 
 
 
@@ -30,18 +41,30 @@ class FriendshipRequest(models.Model):
     class Meta:
         unique_together = ('from_user', 'to_user')
 
-    
-    def accept(self):
-        self.status = 'accepted'
-        self.save()
-        Friendship.objects.create(user1=self.from_user, user2=self.to_user)
-
-    def reject(self):
-        self.status = 'rejected'
-        self.save()
 
     def __str__(self):
         return f"{self.from_user.username} -> {self.to_user.username} ({self.status})"
+    
+
+    
+
+    
+    def accept(self):
+        # self.status = 'accepted'
+        # self.save()
+        friend_request = FriendshipRequest.objects.get(from_user=self.from_user, to_user=self.to_user)
+        friend_request.delete()
+
+        friendship = Friendship(user1=self.from_user, user2=self.to_user)
+        friendship.save()
+
+
+    def reject(self):
+        # self.status = 'rejected'
+        # self.save()
+        friend_request = FriendshipRequest.objects.get(from_user=self.from_user, to_user=self.to_user)
+        friend_request.delete()
+
     
     @staticmethod
     def are_friends(user1, user2):

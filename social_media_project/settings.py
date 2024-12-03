@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'contacts_app.context_processors.friend_requests_count',
             ],
         'libraries': {
             'my_templatetag': 'posts_app.templatetags.return_item'

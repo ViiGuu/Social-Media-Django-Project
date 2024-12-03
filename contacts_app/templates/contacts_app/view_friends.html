@@ -3,12 +3,16 @@
 {% block title %} Friends {% endblock %}
 
 {% block content %}
-<h1>Friends</h1>
 
-<div style="border: 1px solid;">
-
+<div>
+    <!--=====Friendship Requests =========================--->
     {% for request in user.received_friend_requests.all %}
-        <p>{{ request.from_user.username }} wants to add you as a friend.</p>
+    <div  style="border: 1px solid; padding: 10px;">
+        <a href="{% url 'contacts_app:view_profile' request.from_user.id %}">
+            {{ request.from_user.username }}
+        </a>
+        <p> wants to add you as a friend.</p>
+        
         <form method="post" action="{% url 'contacts_app:accept_request' request.id %}">
             {% csrf_token %}
             <button type="submit">Accept</button>
@@ -17,13 +21,86 @@
             {% csrf_token %}
             <button type="submit">Reject</button>
         </form>
+    </div>
     {% endfor %}
 </div>
 
-<ul>
-    {% for friend in friends %}
-    <li>{{friend.username}}</li>
-    {% endfor %}
-</ul>
+
+
+<!--===Friends profiles=====================================================-->
+    {% for friend in friends %}   
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+          <h2 class="py-4">User Profile</h2>
+
+          <img
+            src="{{ friend.profile.profile_pic_url }}"
+            alt="Profile Picture"
+            class="rounded-circle mb-3"
+            style="width: 120px; height: 120px; object-fit: cover"
+          />
+
+          <p class="text-muted m-0" style="font-size: 14px">Username</p>
+          <h2 class="card-title text-primary mb-0">
+            {{ friend.profile.user.username }}
+          </h2>
+
+          <div class="text-start py-2">
+            <div class="d-flex gap-4 border-bottom pb-2">
+              <strong>Joined:</strong>
+              <span class="text-muted ms-1"
+                >{{ friend.profile.user.date_joined }}</span
+              >
+            </div>
+
+            <div class="d-flex gap-4 border-bottom py-2">
+              <strong>Gender:</strong>
+              <span class="text-muted">
+                {% if friend.profile.gender == "M" %} 
+                Male 
+                {% else %} 
+                Female 
+                {% endif %}
+              </span>
+            </div>
+
+            <div class="d-flex gap-4 border-bottom py-2">
+              <strong>Age:</strong>
+              <span class="text-muted ms-4">{{ friend.profile.age }}</span>
+            </div>
+          </div>
+                 
+
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              <button class="btn btn-primary mt-3 mb-2 w-100" type="submit" disabled>Send Message</button>
+            </form>
+          </div>       
+
+          <div>
+              <form method="POST" action="{% url 'contacts_app:remove_friend' friend.id %}">
+                {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button class="btn btn-danger mt-3 mb-2 w-100" type="submit">Remove Friend</button>
+              </form>
+          </div>
+        
+
+          <!-- Back Button -->
+          <div class="mt-4">
+            <a href="{% url 'posts_app:all_posts' %}" class="btn btn-secondary">
+              Back
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
 {% endblock %}

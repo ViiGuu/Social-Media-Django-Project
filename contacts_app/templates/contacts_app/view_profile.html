@@ -51,14 +51,24 @@
               <form method="post" action="{% url 'contacts_app:cancel_friend_request' profile.user.id %}">
               {% csrf_token %}
               Friend request: <span style="color: orange;">{{friendship_status}}</span>
+              <input type="hidden" name="next" value="{{ request.path }}">
               <button class="btn btn-warning mt-3 mb-2 w-100" type="submit">Cancel Request</button>
               </form>
           </div>
 
         {% elif is_friend %}
+
+          <div>
+            <form method="POST">
+              {% csrf_token %}
+              <button class="btn btn-primary mt-3 mb-2 w-100" type="submit" disabled>Send Message</button>
+            </form>
+          </div>       
+
           <div>
               <form method="POST" action="{% url 'contacts_app:remove_friend' profile.user.id %}">
                 {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.path }}">
                   <button class="btn btn-danger mt-3 mb-2 w-100" type="submit">Remove Friend</button>
               </form>
           </div>
@@ -70,6 +80,7 @@
             <div>
                 <form method="post" action="{% url 'contacts_app:send_request' profile.user.id %}">
                     {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
                     <button class="btn btn-success mt-3 mb-2 w-100" type="submit">Add to Friends</button>
                 </form>
             </div>
