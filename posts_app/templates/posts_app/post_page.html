@@ -73,29 +73,48 @@
               {% if comment.author == profile.user %}
               <div class="d-flex gap-2">
                 <!-- Pass the URL directly from Django template context -->
+                <div id="edit-btn{{forloop.counter}}">
                 <button
                   class="btn btn-sm btn-outline-warning"
-                  id="edit-btn{{forloop.counter}}"
-                  data-comment-id="{{ comment.id }}"
-                  data-post-slug="{{ post.slug }}"
-                  onclick="editComment({{ forloop.counter }})"
-                >
+                  id="add-form{{forloop.counter}}">
                   <i class="bi bi-pencil me-1"></i>Edit
                 </button>
+                </div>
                 <form
+                  id="delete-form-{{forloop.counter}}"
                   action="{% url 'posts_app:delete_comment' comment.id comment.post.slug %}"
                   method="post"
                   class="d-inline"
                 >
                   {% csrf_token %}
                   <button
-                    type="submit"
+                    type="button"
+                    value="delete"
                     class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm('Are you sure you want to delete this comment?')"
+                    onclick="confirmDelete('{{forloop.counter}}')"
                   >
                     <i class="bi bi-trash me-1"></i>Delete
                   </button>
                 </form>
+                <script>
+                  function confirmDelete(loopCounter) {
+                      const confirmed = confirm("Are you sure you want to delete this comment?");
+                      if (confirmed) {
+                          document.getElementById(`delete-form-${loopCounter}`).submit();
+                      }
+                  }
+                  document.getElementById('add-form{{forloop.counter}}').addEventListener("click", function () {
+                      document.getElementById("insert-form{{forloop.counter}}").innerHTML=
+                      `<form action="{% url 'posts_app:update_comment' comment.id comment.post.slug %}" method="post">
+                          {% csrf_token %}
+                          <div class="mb-3">
+                          <textarea class="form-control" name="body" rows="4" required>{{comment.body}}</textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Save</button>
+                      </form>`;
+                      document.getElementById("edit-btn{{forloop.counter}}").innerHTML=``;
+                  })
+              </script>
               </div>
               {% endif %}
             </div>
@@ -142,30 +161,4 @@
     {% endif %}
   </div>
 </div>
-
-{% comment %} <script>
-  function editComment(counter) {
-    // Get the comment id and post slug from the button's data attributes
-    const commentId = document.getElementById(`edit-btn${counter}`).getAttribute('data-comment-id');
-    const postSlug = document.getElementById(`edit-btn${counter}`).getAttribute('data-post-slug');
-
-   
-    const formHTML = `
-      <form action="{% url 'posts_app:update_comment' 0 0 %}".replace('0', commentId).replace('0', postSlug) method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-          <textarea class="form-control" name="body" rows="4" required>{{ comment.body }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
-    `;
-
-    // Insert the form into the comment
-    document.getElementById(`insert-form${counter}`).innerHTML = formHTML;
-
-    // Remove the edit button after the form is shown
-    document.getElementById(`edit-btn${counter}`).innerHTML = 'edit';
-  }
-</script> {% endcomment %}
-
 {% endblock %}
