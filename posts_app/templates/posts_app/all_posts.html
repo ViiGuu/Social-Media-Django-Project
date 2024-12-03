@@ -16,7 +16,7 @@
                              alt="User" 
                              style="object-fit: cover; width: 60px; height: 60px;">
                         <div>
-                            <h6 class="mb-1 text-capitalize fw-bold">{{ post.author }}</h6>
+                           <a style="text-decoration: none;" href="{% url 'contacts_app:view_profile' post.author.profile.user.id %}"><h6 class="mb-1 text-capitalize fw-bold">{{ post.author }}</h6></a>
                             <small class="text-muted">{{ post.date|date:"F d, Y" }}</small>
                         </div>
                     </div>
@@ -33,6 +33,10 @@
                                 {{ post.body|truncatewords:30 }}
                             </p>
                         </a>
+
+
+
+
 
                         {% if post.image %}
                         <a href="{% url 'posts_app:page' slug=post.slug %}" class="shadow-none d-block mb-3">
