@@ -50,7 +50,7 @@
                         <div class="d-flex justify-content-between">
                             <div class="d-flex align-items-center gap-2 text-muted">
                                 <i class="fas fa-thumbs-up text-primary"></i>
-                                <small>5 Likes</small>
+                                <small>{{ num_likes|return_item:forloop.counter }} Likes</small>
                             </div>
                             <div>
                                 <a href="{% url 'posts_app:page' slug=post.slug %}" 
