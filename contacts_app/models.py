@@ -75,14 +75,19 @@ class FriendshipRequest(models.Model):
     
     
     def friendship_status(user1, user2):
-        try:
-            friend_request = FriendshipRequest.objects.get(
-                Q(from_user=user1, to_user=user2) | Q(from_user=user2, to_user=user1)
-            )
-            return friend_request.status
-        except FriendshipRequest.DoesNotExist:
-            return None
+        try:            
+            friend_request = FriendshipRequest.objects.get(from_user=user1, to_user=user2)
+            return friend_request.status, friend_request.id
         
+        except FriendshipRequest.DoesNotExist:
+            try:
+                friend_request = FriendshipRequest.objects.get(from_user=user2, to_user=user1)
+                return "requested", friend_request.id
+            
+            except FriendshipRequest.DoesNotExist:
+                return None, None
+        
+
     def delete_all_friendship_requests(user1, user2):
         FriendshipRequest.objects.filter(
             (Q(from_user=user1) & Q(to_user=user2)) |
