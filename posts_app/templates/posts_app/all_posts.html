@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load return_item %}
-
+{% load social_share %}
 {% block title %}All Posts{% endblock %}
 
 {% block content %}
@@ -77,7 +77,15 @@
                             </a>
                             <button class="btn btn-light text-muted  btn-sm d-flex align-items-center gap-2">
                                 <i class="fas fa-share-alt"></i>
-                                <span>Share</span>
+                                <!--<span><a style="text-decoration: none; color:gray" href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+                                    Facebook</a></span>-->
+                                <span>{% post_to_facebook object_or_url "Facebook" %}</span>
+                            </button>
+                            <button class="btn btn-light text-muted  btn-sm d-flex align-items-center gap-2">
+                                <i class="fas fa-share-alt"></i>
+                                <!--<span><a style="text-decoration: none; color:gray" href="https://twitter.com/home?status=I'm%20going%20to%20learn%20to%20Code...%20Come%20build%20an%20web%20apsp%20with%20me!%20%23CFE%20and%20@justinmitchel%20{{request.build_absolute_uri}}">
+                                    X</a></span>-->
+                                <span>{% post_to_twitter "{{post.title}} {{post.body}}" object_or_url "X" %}</span>
                             </button>
                         </div>
                     </div>
