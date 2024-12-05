@@ -20,7 +20,7 @@
 
 
               <h2 class="card-title text-primary text-capitalize mb-0">
-                {{ user_info.user.username }}
+                <a style="text-decoration: none;" href="{% url 'contacts_app:view_profile' user_info.user.id %}">{{ user_info.user.username }}</a>
               </h2>
 
 

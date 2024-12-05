@@ -16,7 +16,7 @@
                 style="width: 80px; height: 80px; object-fit: cover"
               />
               <h2 class="card-title text-primary mb-0">
-                {{ user_info.user.username }}
+                <a style="text-decoration: none;" href="{% url 'contacts_app:view_profile' user_info.user.id %}">{{ user_info.user.username }}</a>
               </h2>
 
               {% if user_info.friendship_status == 'pending' %}
