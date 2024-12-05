@@ -51,8 +51,7 @@ class FriendshipRequest(models.Model):
 
 
     def reject(self):
-        friend_request = FriendshipRequest.objects.get(from_user=self.from_user, to_user=self.to_user)
-        friend_request.delete()
+        self.delete()
 
     
     @staticmethod
