@@ -13,21 +13,14 @@ def send_friend_request(from_user, to_user):
 
 def accept_friend_request(request_id):
     friend_request = FriendshipRequest.objects.get(id=request_id)
-    if friend_request.status == 'pending':
-        friend_request.accept()
-        return f"Accepted friend request from {friend_request.from_user.username}."
-    return "Request already processed."
-
+    friend_request.accept()
+    return f"Accepted friend request from {friend_request.from_user.username}."
+    
 
 def reject_friend_request(request_id):
     friend_request = FriendshipRequest.objects.get(id=request_id)
-    if friend_request.status == 'pending':
-        friend_request.reject()
-        return f"You rejected friend request from {friend_request.from_user.username}."
-    else:
-        friend_request.reject()
-        
-    return "Request already processed."
+    friend_request.reject()
+    return f"You rejected friend request from {friend_request.from_user.username}."
 
 
 def get_friends(user):

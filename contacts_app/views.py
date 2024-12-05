@@ -73,68 +73,27 @@ def view_friends(request):
     return render(request, 'contacts_app/view_friends.html', {'users_info_list': users_info_list, 'profile': request.user.profile})
 
 
-
-
-
-
-
-
-
-
-# @login_required
-# def view_friends(request):
-#     profile = request.user.profile
-#     user = request.user
-
-#     friend_request_users = user.received_friend_requests.all()
-#     friends = user.profile.friends
-#     received_friend_requests = user.received_friend_requests.all()
-    
-#     return render(
-#         request,
-#         'contacts_app/view_friends.html',
-#         {
-#             'friends': friends,
-#             'received_friend_requests': received_friend_requests,
-#             'profile': profile
-#         }
-#     )
-
-
-
-
-
-
 @login_required
 def send_request(request, user_id):
     to_user = get_object_or_404(User, id=user_id)
-    profile = to_user.profile
+
     message = send_friend_request(request.user, to_user)
-    friendship_status, request_id = FriendshipRequest.friendship_status(request.user, to_user)
 
     next_url = request.POST.get('next', '/')
-    return redirect(next_url,
-        {
-            'profile': profile,
-            'friendship_status': friendship_status,
-            'request_id': request_id,
-        }
-    )
+    return redirect(next_url)
 
 
 @login_required
 def accept_request(request, request_id):
     message = accept_friend_request(request_id)
-    messages.info(request, message)
-    return redirect('contacts_app:view_friends')
+    next_url = request.POST.get('next', '/')
+    return redirect(next_url)
 
 
 @login_required
 def reject_request(request, request_id):
     message = reject_friend_request(request_id)
-    messages.info(request, message)
     next_url = request.POST.get('next', '/')
-
     return redirect(next_url)
 
 
@@ -144,16 +103,12 @@ def cancel_friend_request(request, to_user_id):
     profile = to_user.profile
     
     try:
-        friendship_status = FriendshipRequest.friendship_status(request.user, to_user)
         friend_request = FriendshipRequest.objects.get(from_user=from_user, to_user=to_user, status='pending')
-    
         friend_request.delete()
-        
         next_url = request.POST.get('next', '/')
         return redirect(next_url)  
     
     except FriendshipRequest.DoesNotExist:
-        print()
         return HttpResponse("The friend request was not found or has already been accepted/rejected.")
 
 
@@ -161,11 +116,11 @@ def remove_friend(request, friend_id):
     
     try:
         friend_to_remove = User.objects.get(id=friend_id)
-    
         friendship = Friendship.objects.get(
             Q(user1=request.user, user2=friend_to_remove) | Q(user1=friend_to_remove, user2=request.user)
         )
         friendship.delete()
+
         next_url = request.POST.get('next', '/')
         return redirect(next_url, user_id=friend_id)
     
