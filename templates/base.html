@@ -19,7 +19,7 @@
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm py-2">
+    <nav class="navbar navbar-expand-lg bg-primary-subtle shadow-sm py-2">
       <div class="container-fluid">
         <a class="navbar-brand fw-bold" href="#">Logo</a>
 
@@ -67,12 +67,14 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'contacts_app:view_friends' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'view_friends' %}active{% endif %}" 
+              href="{% url 'contacts_app:view_friends' %}">
                 Friends{% if friend_requests_count > 0 %} ({{ friend_requests_count }}){% endif %}
             </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'contacts_app:view_users' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'view_users' %}active{% endif %}"
+               href="{% url 'contacts_app:view_users' %}">
                 Users
               </a>
             </li>
