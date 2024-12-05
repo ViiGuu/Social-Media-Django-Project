@@ -49,7 +49,7 @@ def add_posts(post_per_user=4, seed=None):
     for i in range(len(User.objects.all())):
         djangoU = User.objects.get(pk=i+1)
         for j in range(post_per_user):
-            title = f"{djangoU.username}'s post{j+1}"
+            title = fakegen.paragraph(nb_sentences=1)
             text = fakegen.paragraph(nb_sentences=10)
             slug = f"{djangoU.username}-post-{j}"
 
@@ -64,7 +64,6 @@ def add_comments(seed=None):
         for j in range(len(Post.objects.all())):
             post = Post.objects.get(id=j+1)
             body = fakegen.paragraph(nb_sentences=2)
-
             c = Comment.objects.get_or_create(post=post, author = djangoU, body = body)[0]
             c.save()
 
