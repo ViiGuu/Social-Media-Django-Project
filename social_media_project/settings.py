@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'profile_app',
     'posts_app',
     'contacts_app',
+    'django_social_share'
 ]
 
 MIDDLEWARE = [
