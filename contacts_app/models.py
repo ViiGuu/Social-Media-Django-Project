@@ -32,11 +32,7 @@ class FriendshipRequest(models.Model):
     from_user = models.ForeignKey(User, related_name='sent_friend_requests', on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, related_name='received_friend_requests', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(
-        choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')],
-        default='pending',
-        max_length=10
-    )
+    status = models.CharField(default='pending',max_length=10)
 
     class Meta:
         unique_together = ('from_user', 'to_user')
@@ -44,14 +40,9 @@ class FriendshipRequest(models.Model):
 
     def __str__(self):
         return f"{self.from_user.username} -> {self.to_user.username} ({self.status})"
-    
-
-    
 
     
     def accept(self):
-        # self.status = 'accepted'
-        # self.save()
         friend_request = FriendshipRequest.objects.get(from_user=self.from_user, to_user=self.to_user)
         friend_request.delete()
 
@@ -60,10 +51,7 @@ class FriendshipRequest(models.Model):
 
 
     def reject(self):
-        # self.status = 'rejected'
-        # self.save()
-        friend_request = FriendshipRequest.objects.get(from_user=self.from_user, to_user=self.to_user)
-        friend_request.delete()
+        self.delete()
 
     
     @staticmethod
@@ -87,11 +75,5 @@ class FriendshipRequest(models.Model):
             except FriendshipRequest.DoesNotExist:
                 return None, None
         
-
-    def delete_all_friendship_requests(user1, user2):
-        FriendshipRequest.objects.filter(
-            (Q(from_user=user1) & Q(to_user=user2)) |
-            (Q(from_user=user2) & Q(to_user=user1))
-        ).delete()
 
     
